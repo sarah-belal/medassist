@@ -1,17 +1,11 @@
-import React, { useState } from 'react';
-import './App.css';
-
-function App() {
-  const [question, setQuestion] = useState('');
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setResult(null);
+
+    // Step 1: add user's question to the conversation history
+    const newMessages = [...messages, {role: "user", content: question}];
+    setMessages(newMessages);
 
     try {
       const response = await fetch(
@@ -19,30 +13,19 @@ function App() {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ question: question })
+          // Step 2: send full conversation history instead of just the question
+          body: JSON.stringify({ messages: newMessages })
         }
       );
       const data = await response.json();
-      console.log('API response:', data);
       setResult(data);
+
+      // Step 3: add Claude's response to the conversation history
+      setMessages([...newMessages, {role: "assistant", content: JSON.stringify(data)}]);
+
     } catch (err) {
       setError('Something went wrong. Please try again.');
     }
     setLoading(false);
+    setQuestion('');  // clear the input for the next message
   };
-
-  return (
-    <div className="App">
-      <header>
-        <h1>MedAssist</h1>
-        <p>Describe your symptoms and get OTC product suggestions</p>
-      </header>
-
-      <form onSubmit={handleSubmit}>
-        <textarea
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Describe your health concern... (e.g., I have a sore throat and mild fever)"
-          rows={4}
-        />
-        <button ty

@@ -1,0 +1,32 @@
+
+.follow-up {
+  border-left: 4px solid #3ba776;
+  background: #f0faf5;
+}
+
+.follow-up h3 {
+  color: #1a5c3a;
+}
+
+.follow-up p {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.new-consultation {
+  width: 100%;
+  padding: 14px;
+  background: none;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  color: #777;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.new-consultation:hover {
+  border-color: #3ba776;
+  color: #3ba776;
+}
